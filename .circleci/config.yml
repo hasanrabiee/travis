@@ -1,19 +1,13 @@
-language: node_js
-node_js:
-  - 13
-services:
-  - docker
-install:
-  - echo "noting needs to be installed"
-
-before_script:
-  - echo "no tests"
-
-script:
-  - docker --version
-  - docker build -t sample-node
-  - docker tag simple-node hasanrabiee/simple-node:latest
-
-after_success:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push hasanrabiee/simple-node
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: cimg/node:19.8.1
+    working_directiory: ~/app
+    environment:
+      MY_VAR: "sample-value"
+    steps:
+      - checkout
+      - run: echo $MY_VAR
+      - run: node --version
+      - run: npm install
